@@ -6,14 +6,6 @@ import pytest
 class TitanicDataframeFactory(factory.DictFactory):
     @classmethod
     def build_df_batch(cls, size, **kwargs) -> pd.DataFrame:
-        """Build a batch of instances of the given class, with overridden attrs.
-
-        Args:
-            size (int): the number of instances to build
-
-        Returns:
-            object pd.DataFrame: the built instances with js_round(ed) values
-        """
         raw_rows = cls.build_batch(size=size, **kwargs)
         return cls._convert_to_df(raw_rows)
 
