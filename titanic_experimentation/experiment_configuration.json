@@ -1,0 +1,5 @@
+{
+  "classifier_name": "xgboost",
+  "predictions_column_name": "Survived",
+  "redundant_columns": ["Name", "Sex", "Ticket", "Cabin", "Embarked"]
+}

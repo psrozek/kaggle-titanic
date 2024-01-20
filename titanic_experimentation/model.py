@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import GradientBoostingClassifier
 from xgboost import XGBClassifier
@@ -22,12 +23,12 @@ CLASSIFIERS = {
 
 
 class Model:
-    def __init__(self, classifier):
-        self.classifier = classifier
+    def __init__(self, classifier: str):
+        self.classifier_name = classifier
 
-    def prepare_model(self, x_train, y_train):
-        params = ALGORITHM_HYPERPARAMETERS[self.classifier]
-        model = CLASSIFIERS[self.classifier]
+    def prepare_model(self, x_train: pd.DataFrame, y_train: pd.Series) -> XGBClassifier | GradientBoostingClassifier:
+        params = ALGORITHM_HYPERPARAMETERS[self.classifier_name]
+        model = CLASSIFIERS[self.classifier_name]
         model_grid_search = GridSearchCV(estimator=model, param_grid=params, cv=3)
         model_grid_search.fit(x_train, y_train)
         best_model = model_grid_search.best_estimator_
