@@ -1,5 +1,3 @@
-import time
-import numpy as np
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import GradientBoostingClassifier
 from xgboost import XGBClassifier
@@ -23,11 +21,15 @@ CLASSIFIERS = {
 }
 
 
-def prepare_model(classifier, x_train, y_train):
-    params = ALGORITHM_HYPERPARAMETERS[classifier]
-    model = CLASSIFIERS[classifier]
-    model_grid_search = GridSearchCV(estimator=model, param_grid=params, cv=3)
-    model_grid_search.fit(x_train, y_train)
-    best_model = model_grid_search.best_estimator_
+class Model:
+    def __init__(self, classifier):
+        self.classifier = classifier
 
-    return best_model
+    def prepare_model(self, x_train, y_train):
+        params = ALGORITHM_HYPERPARAMETERS[self.classifier]
+        model = CLASSIFIERS[self.classifier]
+        model_grid_search = GridSearchCV(estimator=model, param_grid=params, cv=3)
+        model_grid_search.fit(x_train, y_train)
+        best_model = model_grid_search.best_estimator_
+
+        return best_model
