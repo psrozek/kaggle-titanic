@@ -24,6 +24,8 @@ class Titanic:
 
     def run_experiment(self, train_dataset):
         features, predictions = self.preprocess_data(train_dataset)
-        x_train, x_test, y_train, y_test = train_test_split(features, predictions, test_size=0.2)
+        x_train, x_test, y_train, y_test = train_test_split(
+            features, predictions, test_size=0.2, stratify=predictions
+        )
         model = self.model.prepare_model(x_train, y_train)
         return model
