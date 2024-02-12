@@ -22,10 +22,13 @@ class Titanic:
     def _remove_redundant_columns(self, dataset: pd.DataFrame) -> pd.DataFrame:
         return dataset.drop(self.redundant_columns, axis=1)
 
-    def run_experiment(self, train_dataset):
+    def run_experiment(self, train_dataset: pd.DataFrame):
         features, predictions = self.preprocess_data(train_dataset)
         x_train, x_test, y_train, y_test = train_test_split(
             features, predictions, test_size=0.2, stratify=predictions
         )
-        model = self.model.prepare_model(x_train, y_train)
-        return model
+        model, model_params, train_model_metrics = self.model.prepare_model(x_train, y_train)
+        retrained_model = self.model.retrain_model_on_whole_dataset(model, x_train, y_train)
+        y_test_predicted = model.predict_proba(x_test)
+        test_model_metrics, _ = self.model.get_model_metrics(y_test_predicted, y_test)
+        return retrained_model
